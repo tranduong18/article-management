@@ -5,34 +5,27 @@ import md5 from "md5";
 export const resolversUser = {
     Query: {
         getUser: async (_, args) => {
-            try {
-                const { id } = args;
+            const { token } = args;
 
-                const user = await User.findOne({
-                    _id: id,
-                    deleted: false
-                });
+            const user = await User.findOne({
+                token: token,
+                deleted: false
+            });
 
-                if(user){
-                    return {
-                        id: user.id,
-                        fullName: user.fullName,
-                        email: user.email,
-                        token: user.token,
-                        code: 200,
-                        message: "Lấy thông tin thành công!"
-                    }
+            if(user){
+                return {
+                    id: user.id,
+                    fullName: user.fullName,
+                    email: user.email,
+                    token: user.token,
+                    code: 200,
+                    message: "Lấy thông tin thành công!"
                 }
-                else{
-                    return {
-                        code: 400,
-                        message: "Id không tồn tại!"
-                    }
-                }
-            } catch (error) {
+            }
+            else{
                 return {
                     code: 400,
-                    message: "Id không đúng định dạng!"
+                    message: "Token không hợp lệ!"
                 }
             }
         }
