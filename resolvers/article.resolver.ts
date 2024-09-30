@@ -6,7 +6,7 @@ export const resolversArticle = {
     getListArticle: async (_, args) => {
       const { 
         sortKey, sortValue, limitItems = 2, page = 1,
-        filterKey, filterValue
+        filterKey, filterValue, keyword
       } = args;
 
       // Bộ lọc
@@ -18,6 +18,13 @@ export const resolversArticle = {
         find[filterKey] = filterValue;
       }
       // Hết Bộ lọc
+
+      // Tìm kiếm
+      if(keyword){
+        const regex = new RegExp(keyword, "i");
+        find["title"] = regex;
+      }
+      // Hết Tìm kiếm
 
       // Sắp xếp
       const sort = {};
